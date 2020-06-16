@@ -5,19 +5,18 @@ import Models.Product;
 import javafx.collections.ObservableList;
 
 public class Inventory {
-    private ObservableList<Part> allParts;
-    private ObservableList<Product> allProducts;
+    private static ObservableList<Part> allParts;
+    private static ObservableList<Product> allProducts;
 
-    private void addPart(Part newPart){
+    public static void addPart(Part newPart){
         allParts.add(newPart);
-
     }
 
-    private void addProduct(Product newProduct){
+    public static void addProduct(Product newProduct){
         allProducts.add(newProduct);
     }
     
-    private Part lookupPart(int id) {
+    public static Part lookupPart(int id) {
         for (Part part : allParts
              ) {
             if (part.id == id){
@@ -30,7 +29,7 @@ public class Inventory {
         return null;
     }
 
-    private Product lookupProduct(int productId) {
+    private static Product lookupProduct(int productId) {
         for (Product product : allProducts
         ) {
             if (product.id == productId) {
@@ -41,5 +40,87 @@ public class Inventory {
         }
         //If we get here, the product doesn't exist so we should return null
         return null;
+    }
+
+    public static Part lookupPart(String partName){
+        for (Part part : allParts
+             ) {
+            if (part.name == partName){
+                return part;
+            }
+            else {
+                //Do nothing
+            }
+        }
+
+        return null;
+    }
+
+    public static Product lookupProduct(String productName){
+        for (Product product : allProducts
+             ) {
+            if (product.name == productName){
+                return product;
+            }
+            else {
+                //Do nothing
+            }
+        }
+
+        return null;
+    }
+
+    public static void updatePart(int index, Part selectedPart){
+        Part partToUpdate = getPartByIndex(index);
+        partToUpdate = selectedPart;
+    }
+
+    public static void updateProduct(int index, Product selectedProduct){
+        Product productToUpdate = getProductByIndex(index);
+        productToUpdate = selectedProduct;
+    }
+
+    public static boolean deletePart(Part selectedPart){
+        for (Part part : allParts
+             ) {
+            if (part.id == selectedPart.id) {
+                boolean isDeleted = allParts.remove(part);
+                return isDeleted;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean deleteProduct(Product selectedProduct){
+        for (Product product : allProducts
+             ) {
+            if (product.id == selectedProduct.id) {
+                boolean isDeleted = allProducts.remove(product);
+                return isDeleted;
+            }
+        }
+
+        return false;
+    }
+
+    public static ObservableList<Part> getAllParts(){
+        return allParts;
+    }
+
+    public static ObservableList<Product> getAllProducts(){
+        return allProducts;
+    }
+
+    private static Part getPartByIndex(int index){
+        Part part = allParts.get(index);
+
+        return part;
+    }
+
+    private static Product getProductByIndex(int index){
+        Product product = allProducts.get(index);
+
+        return product;
     }
 }
