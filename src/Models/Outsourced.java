@@ -1,7 +1,7 @@
 package Models;
 
 public class Outsourced extends Part{
-    public String companyName;
+    private String companyName;
 
     public Outsourced(int partId, String partName, double partPrice, int partStock, int partMin, int partMax, String partCompanyName) {
         super(partId, partName, partPrice, partStock, partMin, partMax);
