@@ -7,14 +7,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainController">
    <children>
-      <TitledPane alignment="CENTER" animated="false" layoutX="-1.0" prefHeight="400.0" prefWidth="617.0" style="-fx-background-color: #002f51;" text="Inventory Management System" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TitledPane alignment="CENTER" animated="false" layoutX="-3.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #002f51;" text="Inventory Management System" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-3.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="0.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="284.0" prefWidth="616.0" style="-fx-background-color: #002f51; -fx-border-width: 20px;">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #002f51; -fx-border-width: 20px;">
                <children>
-                  <Button id="btnExit" fx:id="btnExit" layoutX="548.0" layoutY="333.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="48.0" text="Exit" />
-                  <VBox alignment="BOTTOM_CENTER" layoutX="320.0" prefHeight="317.0" prefWidth="295.0">
+                  <Button id="btnExit" fx:id="btnExit" layoutX="743.0" layoutY="526.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="48.0" text="Exit" />
+                  <VBox alignment="BOTTOM_CENTER" layoutX="309.0" prefHeight="317.0" prefWidth="325.0" spacing="2.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="50.0">
                      <children>
                         <HBox alignment="CENTER" prefHeight="25.0" prefWidth="295.0">
                            <children>
@@ -27,46 +27,48 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="55.0" prefWidth="295.0">
                            <children>
-                              <TextField fx:id="txtProductsSearch" prefHeight="29.0" prefWidth="196.0">
+                              <TextField fx:id="txtProductsSearch" prefHeight="29.0" prefWidth="211.0">
                                  <HBox.margin>
-                                    <Insets right="20.0" />
+                                    <Insets right="28.0" />
                                  </HBox.margin>
                               </TextField>
-                              <Button fx:id="btnProductsSearch" mnemonicParsing="false" text="Search">
+                              <Button fx:id="btnProductsSearch" mnemonicParsing="false" onAction="#onActionSearchProduct" prefHeight="29.0" prefWidth="68.0" text="Search">
                                  <HBox.margin>
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </Button>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="175.0" prefWidth="295.0">
+                        <HBox alignment="CENTER" fillHeight="false" prefHeight="175.0" prefWidth="295.0">
                            <children>
-                              <TableView fx:id="tblProducts" prefHeight="133.0" prefWidth="283.0">
+                              <TableView fx:id="tblProducts" prefHeight="167.0" prefWidth="306.0">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="C1" />
-                                  <TableColumn prefWidth="75.0" text="C2" />
+                                  <TableColumn fx:id="tblColumnProductId" prefWidth="30.0" text="Id" />
+                                  <TableColumn fx:id="tblColumnProductName" prefWidth="93.0" text="Product Name" />
+                                    <TableColumn fx:id="tblColumnProductInventory" prefWidth="101.0" text="Inventory Level" />
+                                    <TableColumn fx:id="tblColumnProductPrice" prefWidth="84.0" text="Price/Unit" />
                                 </columns>
                               </TableView>
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="295.0">
                            <children>
-                              <Button fx:id="btnProductsAdd" mnemonicParsing="false" prefHeight="29.0" prefWidth="77.0" text="Add">
+                              <Button fx:id="btnProductsAdd" mnemonicParsing="false" onAction="#onActionAddProduct" prefHeight="29.0" prefWidth="77.0" text="Add">
                                  <HBox.margin>
                                     <Insets right="20.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button fx:id="btnProductsModify" mnemonicParsing="false" prefHeight="29.0" prefWidth="83.0" text="Modify">
+                              <Button fx:id="btnProductsModify" mnemonicParsing="false" onAction="#onActionModifyProduct" prefHeight="29.0" prefWidth="83.0" text="Modify">
                                  <HBox.margin>
                                     <Insets right="20.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button fx:id="btnProductsDelete" mnemonicParsing="false" prefHeight="29.0" prefWidth="84.0" text="Delete" />
+                              <Button fx:id="btnProductsDelete" mnemonicParsing="false" onAction="#onActionDeleteProduct" prefHeight="29.0" prefWidth="84.0" text="Delete" />
                            </children>
                         </HBox>
                      </children>
                   </VBox>
-                  <VBox alignment="BOTTOM_CENTER" fillWidth="false" prefHeight="313.0" prefWidth="311.0">
+                  <VBox alignment="BOTTOM_CENTER" prefHeight="313.0" prefWidth="325.0" spacing="3.0" AnchorPane.leftAnchor="35.0" AnchorPane.topAnchor="50.0">
                      <children>
                         <HBox alignment="CENTER" fillHeight="false" prefHeight="47.0" prefWidth="311.0">
                            <children>
@@ -79,38 +81,46 @@
                         </HBox>
                         <HBox alignment="TOP_RIGHT" fillHeight="false" prefHeight="45.0" prefWidth="281.0">
                            <children>
-                              <TextField fx:id="txtSearchParts" prefHeight="29.0" prefWidth="203.0">
+                              <TextField fx:id="txtSearchParts" prefHeight="29.0" prefWidth="254.0">
                                  <HBox.margin>
-                                    <Insets right="20.0" />
+                                    <Insets right="44.0" />
                                  </HBox.margin>
                               </TextField>
-                              <Button fx:id="btnSearchParts" mnemonicParsing="false" prefHeight="29.0" prefWidth="78.0" text="Search" />
+                              <Button fx:id="btnSearchParts" mnemonicParsing="false" onAction="#onActionPartsSearch" prefHeight="29.0" prefWidth="128.0" text="Search">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin></Button>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="169.0" prefWidth="311.0">
+                        <HBox alignment="CENTER" prefHeight="169.0" prefWidth="284.0">
                            <children>
-                              <TableView fx:id="tblParts" prefHeight="169.0" prefWidth="295.0">
+                              <TableView fx:id="tblParts" prefHeight="169.0" prefWidth="323.0">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="C1" />
-                                  <TableColumn prefWidth="75.0" text="C2" />
+                                  <TableColumn fx:id="tblColumnPartId" prefWidth="39.0" text="Id" />
+                                  <TableColumn fx:id="tblColumnPartName" prefWidth="84.0" text="Part Name" />
+                                    <TableColumn fx:id="tblColumnPartInventory" prefWidth="109.99999237060547" text="Inventory Level" />
+                                    <TableColumn fx:id="tblColumnPartPrice" prefWidth="90.0" text="Price/Unit" />
                                 </columns>
                               </TableView>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="48.0" prefWidth="311.0">
+                        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="325.0">
                            <children>
-                              <Button fx:id="btnPartsAdd" mnemonicParsing="false" prefHeight="29.0" prefWidth="77.0" text="Add">
+                              <Button fx:id="btnPartsAdd" mnemonicParsing="false" onAction="#onActionAddPart" prefHeight="29.0" prefWidth="77.0" text="Add">
                                  <HBox.margin>
                                     <Insets right="20.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button fx:id="btnPartsModify" mnemonicParsing="false" prefHeight="29.0" prefWidth="83.0" text="Modify">
+                              <Button fx:id="btnPartsModify" mnemonicParsing="false" onAction="#onActionModifyPart" prefHeight="29.0" prefWidth="83.0" text="Modify">
                                  <HBox.margin>
                                     <Insets right="20.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button fx:id="btnPartsDelete" mnemonicParsing="false" prefHeight="29.0" prefWidth="84.0" text="Delete" />
+                              <Button fx:id="btnPartsDelete" mnemonicParsing="false" onAction="#onActionDeletePart" prefHeight="29.0" prefWidth="84.0" text="Delete" />
                            </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
                         </HBox>
                      </children>
                   </VBox>
