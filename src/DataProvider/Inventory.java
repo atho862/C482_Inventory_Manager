@@ -2,11 +2,12 @@ package DataProvider;
 
 import Models.Part;
 import Models.Product;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Inventory {
-    private static ObservableList<Part> allParts;
-    private static ObservableList<Product> allProducts;
+    private static ObservableList<Part> allParts = FXCollections.observableArrayList();
+    private static ObservableList<Product> allProducts = FXCollections.observableArrayList();
 
     public static void addPart(Part newPart){
         allParts.add(newPart);
@@ -19,7 +20,7 @@ public class Inventory {
     public static Part lookupPart(int id) {
         for (Part part : allParts
              ) {
-            if (part.id == id){
+            if (part.getId() == id){
                 return part;
             }
             else{
@@ -45,7 +46,7 @@ public class Inventory {
     public static Part lookupPart(String partName){
         for (Part part : allParts
              ) {
-            if (part.name == partName){
+            if (part.getName() == partName){
                 return part;
             }
             else {
@@ -83,7 +84,7 @@ public class Inventory {
     public static boolean deletePart(Part selectedPart){
         for (Part part : allParts
              ) {
-            if (part.id == selectedPart.id) {
+            if (part.getId() == selectedPart.getId()) {
                 boolean isDeleted = allParts.remove(part);
                 return isDeleted;
             }
