@@ -1,12 +1,12 @@
 package Models;
 
 public abstract class Part {
-    public int id;
-    public String name;
-    public double price;
-    public int stock;
-    public int min;
-    public int max;
+    private int id;
+    private String name;
+    private double price;
+    private int stock;
+    private int min;
+    private int max;
 
     public Part(int partId, String partName, double partPrice, int partStock, int partMin, int partMax){
         this.id = partId;
