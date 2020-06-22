@@ -33,7 +33,7 @@ public class Inventory {
     private static Product lookupProduct(int productId) {
         for (Product product : allProducts
         ) {
-            if (product.id == productId) {
+            if (product.getId() == productId) {
                 return product;
             } else {
                 //Do nothing
@@ -60,7 +60,7 @@ public class Inventory {
     public static Product lookupProduct(String productName){
         for (Product product : allProducts
              ) {
-            if (product.name == productName){
+            if (product.getName() == productName){
                 return product;
             }
             else {
@@ -72,13 +72,11 @@ public class Inventory {
     }
 
     public static void updatePart(int index, Part selectedPart){
-        Part partToUpdate = getPartByIndex(index);
-        partToUpdate = selectedPart;
+        allParts.set(index, selectedPart);
     }
 
     public static void updateProduct(int index, Product selectedProduct){
-        Product productToUpdate = getProductByIndex(index);
-        productToUpdate = selectedProduct;
+        allProducts.set(index, selectedProduct);
     }
 
     public static boolean deletePart(Part selectedPart){
@@ -96,7 +94,7 @@ public class Inventory {
     public static boolean deleteProduct(Product selectedProduct){
         for (Product product : allProducts
              ) {
-            if (product.id == selectedProduct.id) {
+            if (product.getId() == selectedProduct.getId()) {
                 boolean isDeleted = allProducts.remove(product);
                 return isDeleted;
             }
@@ -123,5 +121,37 @@ public class Inventory {
         Product product = allProducts.get(index);
 
         return product;
+    }
+
+    public static int getPartIndex(int partId){
+
+        int index = -1;
+        for (Part part : allParts) {
+            index++;
+            if (part.getId() == partId){
+                return index;
+            }
+            else {
+                //Continue looping
+            }
+        }
+        //If we don't get an index when looping, return -1 to indicate the part doesn't exist
+        return -1;
+    }
+
+    public static int getProductIndex(int productId){
+
+        int index = -1;
+        for (Product product : allProducts) {
+            index++;
+            if (product.getId() == productId){
+                return index;
+            }
+            else {
+                //Do nothing and continue looping
+            }
+        }
+        //If we don't get an index when looping, return -1 to indicate the part doesn't exist
+        return -1;
     }
 }
