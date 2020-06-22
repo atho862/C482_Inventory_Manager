@@ -3,17 +3,19 @@ package Models;
 import javafx.collections.ObservableList;
 
 public class Product {
-    public int id;
-    public String name;
-    public double price;
-    public int min;
-    public int max;
-    public ObservableList<Part> associatedParts;
+    private int id;
+    private String name;
+    private double price;
+    private int stock;
+    private int min;
+    private int max;
+    private ObservableList<Part> associatedParts;
 
-    public Product(int productId, String productName, double productPrice, int productMin, int productMax, ObservableList<Part> productAssociatedParts){
+    public Product(int productId, String productName, double productPrice, int productStock,int productMin, int productMax, ObservableList<Part> productAssociatedParts){
         this.id = productId;
         this.name = productName;
         this.price = productPrice;
+        this.stock = productStock;
         this.min = productMin;
         this.max = productMax;
         this.associatedParts = productAssociatedParts;
@@ -30,6 +32,8 @@ public class Product {
     public void setPrice(double newPrice){
         this.price = newPrice;
     }
+
+    public void setStock(int stock){ this.stock = stock; }
 
     public void setMin(int newMin){
         this.min = newMin;
@@ -51,13 +55,15 @@ public class Product {
         return this.id;
     }
 
-    public String getNAme(){
+    public String getName(){
         return this.name;
     }
 
     public double getPrice(){
         return this.price;
     }
+
+    public int getStock() { return this.stock; }
 
     public int getMin(){
         return this.min;
