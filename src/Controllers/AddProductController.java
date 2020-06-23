@@ -3,6 +3,7 @@ package Controllers;
 import DataProvider.Inventory;
 import Models.Part;
 import Models.Product;
+import Utilities.SearchUtility;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,14 +15,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.ResourceBundle;
 
 public class AddProductController implements Initializable {
 
     private ObservableList<Part> associatedParts;
+    private ObservableList<Part> filteredParts;
     private Stage stage;
     private Parent root;
 
@@ -138,12 +140,37 @@ public class AddProductController implements Initializable {
 
     @FXML
     void onActionSearchBtn(ActionEvent event) {
-
+        String searchString = txtSearch.getText();
+        if (SearchUtility.isStringNumeric(searchString)) {
+            Part part = Inventory.lookupPart(Integer.parseInt(searchString));
+            if (part == null) {
+                new Alert(Alert.AlertType.INFORMATION, String.format("Could not locate part with Id %s", searchString)).showAndWait();
+                return;
+            }
+            filteredParts = FXCollections.observableArrayList();
+            filteredParts.add(part);
+            tblViewAddAssociatedPart.setItems(filteredParts);
+        }
+        else {
+            Part part = Inventory.lookupPart(searchString);
+            if (part == null) {
+                new Alert(Alert.AlertType.INFORMATION, String.format("Could not locate part with Name %s", searchString)).showAndWait();
+                return;
+            }
+            filteredParts = FXCollections.observableArrayList();
+            filteredParts.add(part);
+            tblViewAddAssociatedPart.setItems(filteredParts);
+        }
     }
 
     @FXML
     void onActionAddBtn(ActionEvent event) {
         Part part = tblViewAddAssociatedPart.getSelectionModel().getSelectedItem();
+        if (associatedParts.contains(part)) {
+            new Alert(Alert.AlertType.ERROR, "This part is already associated with the current product.").showAndWait();
+            return;
+        }
+
         associatedParts.add(part);
     }
 
@@ -169,6 +196,19 @@ public class AddProductController implements Initializable {
         tblColumnAddPartName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tblColumnAddInventory.setCellValueFactory(new PropertyValueFactory<>("stock"));
         tblColumnAddPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+        tblColumnAddPrice.setCellFactory(tc -> new TableCell<Part, Double>(){
+            @Override
+            protected void updateItem(Double price, boolean empty) {
+                super.updateItem(price, empty);
+                if (empty) {
+                    setText(null);
+                }
+                else {
+                    setText(currencyFormat.format(price));
+                }
+            }
+        });
     }
 
     private void initializeAssociatedPartsTable(){
@@ -178,5 +218,18 @@ public class AddProductController implements Initializable {
         tblColumnPartName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tblColumnInventory.setCellValueFactory(new PropertyValueFactory<>("stock"));
         tblColumnPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+        tblColumnPrice.setCellFactory(tc -> new TableCell<Part, Double>(){
+            @Override
+            protected void updateItem(Double price, boolean empty) {
+                super.updateItem(price, empty);
+                if (empty) {
+                    setText(null);
+                }
+                else {
+                    setText(currencyFormat.format(price));
+                }
+            }
+        });
     }
 }
