@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -204,6 +205,19 @@ public class MainController implements Initializable {
         tblColumnPartName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tblColumnPartInventory.setCellValueFactory(new PropertyValueFactory<>("stock"));
         tblColumnPartPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+        tblColumnPartPrice.setCellFactory(tc -> new TableCell<Part, Double>(){
+            @Override
+            protected void updateItem(Double price, boolean empty) {
+                super.updateItem(price, empty);
+                if (empty) {
+                    setText(null);
+                }
+                else {
+                    setText(currencyFormat.format(price));
+                }
+            }
+        });
     }
 
     private void initializeProductsTable(){
@@ -212,6 +226,19 @@ public class MainController implements Initializable {
         tblColumnProductName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tblColumnProductInventory.setCellValueFactory(new PropertyValueFactory<>("stock"));
         tblColumnProductPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+        tblColumnProductPrice.setCellFactory(tc -> new TableCell<Product, Double>(){
+            @Override
+            protected void updateItem(Double price, boolean empty) {
+                super.updateItem(price, empty);
+                if (empty) {
+                    setText(null);
+                }
+                else {
+                    setText(currencyFormat.format(price));
+                }
+            }
+        });
     }
 
     private int getNextPartId(){
