@@ -84,13 +84,25 @@ public class ModifyPartController implements Initializable {
 
     @FXML
     void onActionSave(ActionEvent event) throws IOException {
+        int inventory = Integer.valueOf(txtInventory.getText());
+        int min = Integer.valueOf(txtMin.getText());
+        int max = Integer.valueOf(txtMax.getText());
+        if (inventory < min){
+            new Alert(Alert.AlertType.ERROR, "Inventory level must be greater than Min").showAndWait();
+            return;
+        }
+        if (inventory > max) {
+            new Alert(Alert.AlertType.ERROR, "Inventory level must be less than Max").showAndWait();
+            return;
+        }
+
         if(btnRadioInHouse.isSelected()){
             InHouse part = new InHouse(Integer.valueOf(txtId.getText()),
                     txtName.getText(),
                     Double.valueOf(txtCost.getText()),
-                    Integer.valueOf(txtInventory.getText()),
-                    Integer.valueOf(txtMin.getText()),
-                    Integer.valueOf(txtMax.getText()),
+                    inventory,
+                    min,
+                    max,
                     Integer.valueOf(txtMachineId.getText()));
             int index = Inventory.getPartIndex(Integer.valueOf(txtId.getText()));
             Inventory.updatePart(index, part);
@@ -99,9 +111,9 @@ public class ModifyPartController implements Initializable {
             Outsourced part = new Outsourced(Integer.valueOf(txtId.getText()),
                     txtName.getText(),
                     Double.valueOf(txtCost.getText()),
-                    Integer.valueOf(txtInventory.getText()),
-                    Integer.valueOf(txtMin.getText()),
-                    Integer.valueOf(txtMax.getText()),
+                    inventory,
+                    min,
+                    min,
                     txtMachineId.getText());
             int index = Inventory.getPartIndex(Integer.valueOf(txtId.getText()));
             Inventory.updatePart(index, part);
@@ -115,15 +127,20 @@ public class ModifyPartController implements Initializable {
 
     @FXML
     void onActionCancel(ActionEvent event) throws IOException {
-        try {
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        root = FXMLLoader.load(getClass().getResource("/Views/Main.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();}
-        catch (IOException e) {
-            System.out.println(e);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to leave this page? Any unsaved changes will be lost!", ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.YES) {
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/Views/Main.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         }
+        else {
+            return;
+        }
+
     }
 
     public void sendPart(Part part){

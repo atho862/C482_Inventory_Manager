@@ -115,12 +115,29 @@ public class ModifyProductController implements Initializable {
 
     @FXML
     void onActionSaveBtn(ActionEvent event) throws IOException {
+        int inventory = Integer.valueOf(txtInventory.getText());
+        int min = Integer.valueOf(txtMin.getText());
+        int max = Integer.valueOf(txtMax.getText());
+
+        if (inventory < min) {
+            new Alert(Alert.AlertType.ERROR, "Inventory level must be greater than Min").showAndWait();
+            return;
+        }
+        if (inventory > max) {
+            new Alert(Alert.AlertType.ERROR, "Inventory level must be less than Max").showAndWait();
+            return;
+        }
+        if (associatedParts.size() == 0) {
+            new Alert(Alert.AlertType.ERROR, "A product must have at least one associated part").showAndWait();
+            return;
+        }
+
         Product product = new Product(Integer.valueOf(txtId.getText()),
                 txtName.getText(),
                 Double.valueOf(txtPrice.getText()),
-                Integer.valueOf(txtInventory.getText()),
-                Integer.valueOf(txtMin.getText()),
-                Integer.valueOf(txtMax.getText()),
+                inventory,
+                min,
+                max,
                 associatedParts);
         int index = Inventory.getProductIndex(product.getId());
         Inventory.updateProduct(index, product);
@@ -134,11 +151,19 @@ public class ModifyProductController implements Initializable {
 
     @FXML
     void onActionCancelBtn(ActionEvent event) throws IOException {
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        root = FXMLLoader.load(getClass().getResource("/Views/Main.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to leave this page? Any unsaved changes will be lost!", ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.YES) {
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("/Views/Main.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
+        else {
+            return;
+        }
     }
 
     @FXML
@@ -179,8 +204,16 @@ public class ModifyProductController implements Initializable {
 
     @FXML
     void onActionDeleteBtn(ActionEvent event) {
-        Part partToDelete = tblViewAssociatedParts.getSelectionModel().getSelectedItem();
-        associatedParts.remove(partToDelete);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to remove this assoicated part?", ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.YES) {
+            Part partToDelete = tblViewAssociatedParts.getSelectionModel().getSelectedItem();
+            associatedParts.remove(partToDelete);
+        }
+        else {
+            return;
+        }
     }
 
     public void sendProduct(Product product){

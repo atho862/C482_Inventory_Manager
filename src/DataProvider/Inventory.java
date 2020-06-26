@@ -30,7 +30,7 @@ public class Inventory {
         return null;
     }
 
-    private static Product lookupProduct(int productId) {
+    public static Product lookupProduct(int productId) {
         for (Product product : allProducts
         ) {
             if (product.getId() == productId) {
@@ -46,7 +46,7 @@ public class Inventory {
     public static Part lookupPart(String partName){
         for (Part part : allParts
              ) {
-            if (part.getName() == partName){
+            if (partName.equals(part.getName())){
                 return part;
             }
             else {
@@ -60,7 +60,7 @@ public class Inventory {
     public static Product lookupProduct(String productName){
         for (Product product : allProducts
              ) {
-            if (product.getName() == productName){
+            if (productName.equals(product.getName())){
                 return product;
             }
             else {

@@ -3,6 +3,8 @@ package Controllers;
 import DataProvider.Inventory;
 import Models.Part;
 import Models.Product;
+import Utilities.SearchUtility;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,6 +25,8 @@ public class MainController implements Initializable {
 
     Stage stage;
     Parent root;
+    ObservableList<Product> filteredProducts;
+    ObservableList<Part> filteredParts;
 
     @FXML
     private TableColumn<Part, Integer> tblColumnPartId;
@@ -95,7 +99,27 @@ public class MainController implements Initializable {
 
     @FXML
     void onActionSearchProduct(ActionEvent event) {
-
+        String searchString = txtProductsSearch.getText();
+        if (SearchUtility.isStringNumeric(searchString)) {
+            Product product = Inventory.lookupProduct(Integer.parseInt(searchString));
+            if (product == null){
+                new Alert(Alert.AlertType.INFORMATION, String.format("Unable to locate part with Id %s", searchString)).showAndWait();
+                return;
+            }
+            filteredProducts = FXCollections.observableArrayList();
+            filteredProducts.add(product);
+            tblProducts.setItems(filteredProducts);
+        }
+        else {
+            Product product = Inventory.lookupProduct(searchString);
+            if (product == null) {
+                new Alert(Alert.AlertType.INFORMATION, String.format("Unable to locate product with Name %s", searchString)).showAndWait();
+                return;
+            }
+            filteredProducts = FXCollections.observableArrayList();
+            filteredProducts.add(product);
+            tblProducts.setItems(filteredProducts);
+        }
     }
 
     @FXML
@@ -132,16 +156,45 @@ public class MainController implements Initializable {
 
     @FXML
     void onActionDeleteProduct(ActionEvent event) {
-        Product productToDelete = tblProducts.getSelectionModel().getSelectedItem();
-        boolean isDeleted = Inventory.deleteProduct(productToDelete);
-        if (isDeleted){
-            tblProducts.setItems(Inventory.getAllProducts());
+        Product product = tblProducts.getSelectionModel().getSelectedItem();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, String.format("Are you sure you want to delete %s", product.getName()), ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.YES) {
+            Product productToDelete = tblProducts.getSelectionModel().getSelectedItem();
+            boolean isDeleted = Inventory.deleteProduct(productToDelete);
+            if (isDeleted){
+                tblProducts.setItems(Inventory.getAllProducts());
+            }
+        }
+        else {
+            return;
         }
     }
 
     @FXML
     void onActionPartsSearch(ActionEvent event) {
-
+        String searchString = txtSearchParts.getText();
+        if (SearchUtility.isStringNumeric(searchString)){
+            Part part = Inventory.lookupPart(Integer.parseInt(searchString));
+            if (part == null) {
+                new Alert(Alert.AlertType.INFORMATION, String.format("Unable to locate part with Id: %s", searchString)).showAndWait();
+                return;
+            }
+            filteredParts = FXCollections.observableArrayList();
+            filteredParts.add(part);
+            tblParts.setItems(filteredParts);
+        }
+        else {
+            Part part = Inventory.lookupPart(searchString);
+            if (part == null) {
+                new Alert(Alert.AlertType.INFORMATION, String.format("Unable to locate part with Name: %s", searchString));
+                return;
+            }
+            filteredParts = FXCollections.observableArrayList();
+            filteredParts.add(part);
+            tblParts.setItems(filteredParts);
+        }
     }
 
     @FXML
@@ -178,10 +231,19 @@ public class MainController implements Initializable {
 
     @FXML
     void onActionDeletePart(ActionEvent event) {
-        Part partToDelete = tblParts.getSelectionModel().getSelectedItem();
-        boolean isDeleted = Inventory.deletePart(partToDelete);
-        if (isDeleted) {
-            tblParts.setItems(Inventory.getAllParts());
+        Part part = tblParts.getSelectionModel().getSelectedItem();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, String.format("Are you sure you want to delete %s", part.getName()), ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+
+        if (alert.getResult() == ButtonType.YES) {
+            Part partToDelete = tblParts.getSelectionModel().getSelectedItem();
+            boolean isDeleted = Inventory.deletePart(partToDelete);
+            if (isDeleted) {
+                tblParts.setItems(Inventory.getAllParts());
+            }
+        }
+        else {
+            return;
         }
     }
 
